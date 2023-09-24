@@ -5,8 +5,9 @@ ud-watermark offers a fully customisable watermark for your server. It includes 
 ## Installation
 
 1. Download latest release.
-2. Drag `ud-watermark` folder into your FiveM server's resources folder.
-3. Add the following line to your server.cfg file:
+2. Extract and rename `ud-watermark-main` to `ud-watermark`.
+3. Drag the `ud-watermark` folder into your FiveM server's resources folder.
+4. Add the following line to your server.cfg file:
 
 ```
 start ud-watermark
