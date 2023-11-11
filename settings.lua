@@ -1,3 +1,4 @@
+Settings = {}
 --[[
 $$\   $$\                                $$\     
 $$ | $$  |                               $$ |    
@@ -28,32 +29,19 @@ For support, view the documentation or join our discord.
 
 Discord: https://discord.gg/ZwFX57r2K7
 Documentation: https://krypt-scripts.gitbook.io/krypt-scripts/
-
 ]]--
 
-fx_version "cerulean"
-game "gta5"
+-- [ Toggle ] --
+Settings.toggle = false -- allows players to enable/disable watermark
 
-name "Krypt_Watermark"
-description "Customisable Watermark"
-author "Krypt Scripts"
-version "v1.1.0"
-lua54 'yes'
+-- [ Logo Options ] --
+Settings.logo = false -- use logo (will override text)
 
-shared_script 'settings.lua'
-
-client_scripts {
-	'scripts/client/*'
-}
-
-ui_page 'html/ui.html'
-
-files {
-	'html/*',
-	'html/img/*'
-}
-
-escrow_ignore {
-	'settings.lua',
-	'client.lua'
-}
+-- [ Text Options ] --
+Settings.text = "Change me" -- text
+Settings.textRainbow = true -- rainbow colour (will override normal colour)
+Settings.textColour = {r = 35, g = 153, b = 212} -- rgb colour values (https://www.rapidtables.com/web/color/RGB_Color.html)
+Settings.textTransparency = 255 -- alpha values (0-255)
+Settings.textFont = 1 -- font options range from 1-5
+Settings.textScale = 0.4 -- size of text
+Settings.textOffset = {x = 0.005, y = 0.001} -- alters position of text
