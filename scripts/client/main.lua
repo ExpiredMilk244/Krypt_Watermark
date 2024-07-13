@@ -30,11 +30,9 @@ Discord: https://discord.gg/ZwFX57r2K7
 Documentation: https://krypt-scripts.gitbook.io/krypt-scripts/
 ]]--
 
-local isOpen = false 
-local disabled = false
 local active = true
 
-function RGBRainbow(frequency)
+local function RGBRainbow(frequency)
   local result = {}
   local curtime = GetGameTimer() / 1000
 
@@ -45,79 +43,68 @@ function RGBRainbow(frequency)
   return result
 end
 
-if Settings.toggle then
-  RegisterCommand('watermark', function()
+local function Main()
+    if Settings.toggle then
+        RegisterCommand('watermark', function()
+            if Settings.logo then
+              if not active then
+                TriggerEvent('krypt_watermark:client:toggleWatermark', true)
+              else
+                TriggerEvent('krypt_watermark:client:toggleWatermark', false) 
+              end
+            else
+              if active then
+                active = false
+              else
+                active = true
+              end
+            end
+        end)
+
+        TriggerEvent("chat:addSuggestion", "/watermark", "Shows/hides watermark")
+    end
+
     if Settings.logo then
-      if not isOpen then
-        TriggerEvent('DisplayWM', true)
-      else
-        TriggerEvent('DisplayWM', false) 
-      end
+        RegisterNetEvent('krypt_watermark:client:toggleWatermark', function(status)
+            if Settings.logo then
+                if status then
+                    SendNUIMessage({toggleImage = 'true'})
+                    active = true
+                else
+                    SendNUIMessage({toggleImage = 'false'})
+                    active = false
+                end
+            end
+        end)
     else
-      if active then
-        active = false
-      else
-        active = true
-      end
+        local text = Settings.text
+        local textColour = Settings.textColour
+        local textTransparency = Settings.textTransparency
+        local textFont = Settings.textFont
+        local textScale = Settings.textScale
+        local textOffset = Settings.textOffset
+      
+        Citizen.CreateThread(function()
+            while true do
+                Wait(1)
+                if active then
+                    if Settings.textRainbow then
+                        textColour = RGBRainbow(1)
+                    end
+                end
+                SetTextColour(textColour.r, textColour.g, textColour.b, textTransparency)
+                SetTextFont(textFont)
+                SetTextScale(textScale, textScale)
+                SetTextWrap(0.0, 1.0)
+                SetTextCentre(false)
+                SetTextDropshadow(2, 2, 0, 0, 0)
+                SetTextEdge(1, 0, 0, 0, 205)
+                SetTextEntry("STRING")
+                AddTextComponentString(text)
+                DrawText(textOffset.x, textOffset.y)
+            end
+        end)
     end
-  end)
-
-  Citizen.CreateThread(function()
-    if NetworkIsSessionStarted() then
-      TriggerEvent("chat:addSuggestion", "/watermark", "Toggle the watermark")
-      return
-    end
-  end)
 end
 
-if Settings.logo then
-  RegisterNetEvent('DisplayWM', function (status)
-    if status then 
-      SendNUIMessage({displayWindow = 'true'})
-      isOpen = true
-      disabled = false
-    else
-      SendNUIMessage({displayWindow = 'false'})
-      isOpen = false
-      disabled = true
-    end
-  end)
-
-  AddEventHandler('onResourceStart', function()
-    Wait(200)
-    TriggerEvent('DisplayWM', true)
-  end)
-
-  AddEventHandler('onClientMapStart', function ()
-    Wait(200)
-    TriggerEvent('DisplayWM', true) 
-  end)
-else
-  local text = Settings.text
-  local textColour = Settings.textColour
-  local textTransparency = Settings.textTransparency
-  local textFont = Settings.textFont
-  local textScale = Settings.textScale
-  local textOffset = Settings.textOffset
-
-  Citizen.CreateThread(function()
-    while true do
-      Wait(1)
-      if active then
-        if Settings.textRainbow then
-          textColour = RGBRainbow(1)
-        end
-        SetTextColour(textColour.r, textColour.g, textColour.b, textTransparency)
-        SetTextFont(textFont)
-        SetTextScale(textScale, textScale)
-        SetTextWrap(0.0, 1.0)
-        SetTextCentre(false)
-        SetTextDropshadow(2, 2, 0, 0, 0)
-        SetTextEdge(1, 0, 0, 0, 205)
-        SetTextEntry("STRING")
-        AddTextComponentString(text)
-        DrawText(textOffset.x, textOffset.y)
-      end
-    end
-  end)
-end
+Main()

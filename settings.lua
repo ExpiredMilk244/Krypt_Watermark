@@ -35,10 +35,10 @@ Documentation: https://krypt-scripts.gitbook.io/krypt-scripts/
 Settings.toggle = false -- allows players to enable/disable watermark
 
 -- [ Logo Options ] --
-Settings.logo = false -- use logo (will override text)
+Settings.logo = true -- use logo (will override text)
 
 -- [ Text Options ] --
-Settings.text = "Change me" -- text
+Settings.text = "Change me!" -- text
 Settings.textRainbow = true -- rainbow colour (will override normal colour)
 Settings.textColour = {r = 35, g = 153, b = 212} -- rgb colour values (https://www.rapidtables.com/web/color/RGB_Color.html)
 Settings.textTransparency = 255 -- alpha values (0-255)
